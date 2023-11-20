@@ -1,0 +1,462 @@
+// EJERCICIO 1
+
+
+import java.util.Scanner;
+
+
+public class EjercicioA {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // CARRERAS
+        System.out.println("Seleccione la carrera:");
+        System.out.println("001. Ingeniería De Sistemas");
+        System.out.println("002. Electronica");
+        System.out.println("003. Ed Fisica");
+        System.out.print("Ingrese el ID de la carrera: ");
+        int carreraSeleccionada = scanner.nextInt();
+
+        // DEMOGRAFICOS
+        System.out.print("Ingrese sus nombres: ");
+        String nombres = scanner.next();
+        System.out.print("Ingrese sus apellidos: ");
+        String apellidos = scanner.next();
+        System.out.print("Ingrese su número de documento: ");
+        String documento = scanner.next();
+        System.out.print("Ingrese su dirección: ");
+        String direccion = scanner.next();
+        System.out.print("Ingrese su número de teléfono: ");
+        String telefono = scanner.next();
+
+        // ESTUDIA VIRTUAL?
+        System.out.print("¿El estudiante realiza su curso virtual? (Si/No): ");
+        scanner.nextLine();
+        String respuestaCursoVirtual = scanner.nextLine();
+        boolean virtual = respuestaCursoVirtual.equalsIgnoreCase("si");
+     // MONTO MATRICULA
+        double montoMatricula = calcularMatricula(virtual);
+        
+        imprimirRecibo(nombres, apellidos, documento, direccion, telefono, carreraSeleccionada, virtual, montoMatricula);
+        
+        scanner.close();
+    }
+
+	private static double calcularMatricula(boolean virtual) {
+		double montobase = 1500;
+		double aumentoporsemestre = 0.05;
+		Scanner scaner = new Scanner (System.in);
+		
+		 if (virtual) {
+	            // SI ES VIRTUAL, SOLO MONTO BASE
+			 
+	            return montobase;
+		 } else {
+	            // SINO SE DEBE CALCULAR POR VALOR SEMESTRE
+	            
+			 System.out.print("Ingrese el número de semestres cursados: ");
+	            
+			 int semestres = scaner.nextInt();
+	            if (semestres >= 5) {
+	                montobase += montobase * aumentoporsemestre;
+	                
+	            }
+	            // VALOR SEMESTRE
+	            double montoTotal = montobase;
+
+	            // VALOR MATERIAS PERDIDAS
+	            System.out.print("Ingrese el número de materias perdidas: ");
+	            int materiasPerdidas = scaner.nextInt();
+
+	            // COSTO CREDITOS SEGUN SEMESTRES
+	            double costoCredito;
+	            if (semestres <= 3) {
+	                costoCredito = 20;
+	            } else if (semestres <= 6) {
+	                costoCredito = 25;
+	            } else {
+	                costoCredito = 30;
+	            }
+	            // PRECIO MATERIAS PERDIDAS
+	            double costoMateriasPerdidas = materiasPerdidas * costoCredito;
+
+	            // AUMENTAR EL MONTOBASE
+	            montoTotal += costoMateriasPerdidas;
+
+	            return montoTotal;
+	        }
+	    }
+
+	    private static void imprimirRecibo(String nombres, String apellidos, String documento, String direccion, String telefono, int carrera, boolean enLinea, double montoMatricula) {
+	        System.out.println("\nRECIBO DE INSCRIPCIÓN");
+	        System.out.println("------------------------------");
+	        System.out.println("Nombres: " + nombres);
+	        System.out.println("Apellidos: " + apellidos);
+	        System.out.println("Documento: " + documento);
+	        System.out.println("Dirección: " + direccion);
+	        System.out.println("Teléfono: " + telefono);
+	        System.out.println("Carrera: " + obtenerNombreCarrera(carrera));
+	        System.out.println("Modalidad: " + (enLinea ? "En línea" : "Presencial"));
+	        System.out.println("Monto de la matrícula: $" + montoMatricula);
+	        System.out.println("------------------------------");
+	    }
+
+	    private static String obtenerNombreCarrera(int carrera) {
+	        switch (carrera) {
+	            case 1:
+	                return "Ingeniería De Sistemas";
+	            case 2:
+	                return "Electronica";
+	            case 3:
+	                return "Ed Fisica";
+	            default:
+	                return "No registra";
+	        }
+	    }
+	
+	            }
+
+
+//EJERCICIO 2
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+class Cliente {
+    private String nombre;
+    private List<Alquiler> alquileres;
+
+    public Cliente(String nombre) {
+        this.nombre = nombre;
+        this.alquileres = new ArrayList<>();
+    }
+
+    public void agregarAlquiler(Alquiler alquiler) {
+        alquileres.add(alquiler);
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public List<Alquiler> getAlquileres() {
+        return alquileres;
+    }
+}
+
+class Barco {
+    private String matricula;
+    private double eslora;
+    private int anoFabricacion;
+    
+
+    public Barco(String matricula, double eslora, int anoFabricacion) {
+        this.matricula = matricula;
+        this.setEslora(eslora);
+        this.setAnoFabricacion(anoFabricacion);
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+	public double getEslora() {
+		return eslora;
+	}
+
+	public void setEslora(double eslora) {
+		this.eslora = eslora;
+	}
+
+	public int getAnoFabricacion() {
+		return anoFabricacion;
+	}
+
+	public void setAnoFabricacion(int anoFabricacion) {
+		this.anoFabricacion = anoFabricacion;
+	}
+
+	public String getNombre() {
+		String barco="Perla Negra "
+				+ "Matricula: 10, "
+				+ "Eslora: 5, "
+				+ "Año Fabricacion: 2020, ";
+	
+
+		return barco;
+	}
+}
+
+class Alquiler {
+    private String posicionAmarre;
+    private Barco barco;
+    private int clientes;
+    private String fechaInicio;
+    private String fechaFin;
+
+    public Alquiler(String posicionAmarre, Barco barco, int clientes, String fechaInicio, String fechaFin) {
+        this.posicionAmarre = posicionAmarre;
+        this.setBarco(barco);
+        this.setClientes(clientes);
+        this.setFechaInicio(fechaInicio);
+        this.setFechaFin(fechaFin);
+    }
+
+    public double calcularCosto() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fechaInicioLocal = LocalDate.parse(fechaInicio, formatter);
+        LocalDate fechaFinLocal = LocalDate.parse(fechaFin, formatter);
+
+       
+        int diasOcupacion = (int) fechaInicioLocal.until(fechaFinLocal).getDays() + 1;
+
+        
+        double costo = diasOcupacion * (25000 + calcularImpuestos());
+
+        return costo;
+    }
+
+    private double calcularImpuestos() {
+        
+        return 0.1; 
+    }
+
+
+    public String getPosicionAmarre() {
+        return posicionAmarre;
+    }
+
+	public Barco getBarco() {
+		return barco;
+	}
+
+	public void setBarco(Barco barco) {
+		this.barco = barco;
+	}
+
+	public int getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(int clientes) {
+		this.clientes = clientes;
+	}
+
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public String getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+}
+
+public class EjercicioB {
+    public static void main(String[] args) {
+        
+        Barco barco = new Barco("Perla negra", 10.5, 2020);
+        Cliente cliente = new Cliente("Helmer Almeida");
+
+        Alquiler alquiler1 = new Alquiler("A1", barco, 3, "2023-01-01", "2023-01-03");
+        Alquiler alquiler2 = new Alquiler("B2", barco, 5, "2023-02-01", "2023-02-05");
+
+        cliente.agregarAlquiler(alquiler1);
+        cliente.agregarAlquiler(alquiler2);
+
+    
+        for (Alquiler alquiler : cliente.getAlquileres()) {
+            System.out.println("Recibo:");
+            System.out.println("Cliente: " + cliente.getNombre());
+            System.out.println("Posición Amarre: " + alquiler.getPosicionAmarre());
+            System.out.println("Nombre barco: " + barco.getNombre());
+            
+            System.out.println("Costo: " + alquiler.calcularCosto());
+            System.out.println("------");
+        }
+    }
+
+//EJERCICIO3
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Usuario {
+   public String nombres;
+   public String apellidos;
+   public int edad;
+   public String representante;
+
+    public Usuario(String nombres, String apellidos, int edad, String representante) {
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.edad = edad;
+        this.representante = representante;
+    }
+}
+
+abstract class CuentaBancaria {
+    Usuario cliente;
+    double saldo;
+
+    public CuentaBancaria(Usuario cliente, double saldoInicial) {
+        this.cliente = cliente;
+        this.saldo = saldoInicial;
+    }
+
+    abstract void realizarDeposito(double monto);
+
+    abstract void realizarRetiro(double monto);
+
+    abstract void aplicarMantenimiento();
+
+    abstract void imprimirEstadoCuenta();
+}
+
+class CuentaAhorro extends CuentaBancaria {
+    double tasaRendimientoAnual = 0.022;
+
+    public CuentaAhorro(Usuario cliente, double saldoInicial) {
+        super(cliente, saldoInicial);
+    }
+
+    @Override
+    void realizarDeposito(double monto) {
+        
+    }
+
+    @Override
+    void realizarRetiro(double monto) {
+        
+    }
+
+    @Override
+    void aplicarMantenimiento() {
+        
+    }
+
+    @Override
+    void imprimirEstadoCuenta() {
+        
+    }
+}
+
+class CuentaCorriente extends CuentaBancaria {
+    double tasaMantenimientoMensual = 0.015;
+    double comisionChequeEmitido = 3000;
+
+    public CuentaCorriente(Usuario cliente, double saldoInicial) {
+        super(cliente, saldoInicial);
+    }
+
+    @Override
+    void realizarDeposito(double monto) {
+        
+    }
+
+    @Override
+    void realizarRetiro(double monto) {
+        
+    }
+
+    @Override
+    void aplicarMantenimiento() {
+     
+    }
+
+    @Override
+    void imprimirEstadoCuenta() {
+        
+    }
+}
+
+public class EjercicioC {
+    static ArrayList<CuentaBancaria> cuentas = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scaner = new Scanner(System.in);
+			while (true) {
+			    System.out.println("Menú:");
+			    System.out.println("1. Aperturas de Cuentas: Ahorro y Corriente.");
+			    System.out.println("2. Transferencias.");
+			    System.out.println("3. Cajero Automático.");
+			    System.out.println("4. Cierre de mes. (Estado de Cuenta).");
+			    System.out.println("5. Salir.");
+
+			    int opcion = scaner.nextInt();
+			  
+
+			    switch (opcion) {
+			        case 1:
+			            abrirCuenta();
+			            break;
+			        case 2:
+			            
+			            break;
+			        case 3:
+			            
+			            break;
+			        case 4:
+			    
+			            break;
+			        case 5:
+			            System.exit(0);
+			            break;
+			        default:
+			            System.out.println("Inténtalo de nuevo.");
+			    }
+			}
+		}
+    
+
+    static void abrirCuenta() {
+        Scanner scanner = new Scanner(System.in); {
+			System.out.println("Tipo de cuenta (1. Ahorro / 2. Corriente): ");
+			int tipoCuenta = scanner.nextInt();
+
+			System.out.println("Nombres: ");
+			String nombres = scanner.next();
+
+			System.out.println("Apellidos: ");
+			String apellidos = scanner.next();
+
+			System.out.println("Edad: ");
+			int edad = scanner.nextInt();
+
+			String representante = "";
+			if (edad < 18) {
+			    System.out.println("Nombres del representante: ");
+			    representante = scanner.next();
+			}
+
+			System.out.println("Monto inicial: ");
+			double montoInicial = scanner.nextDouble();
+
+			Usuario cliente = new Usuario(nombres, apellidos, edad, representante);
+
+			if (tipoCuenta == 1) {
+			    cuentas.add(new CuentaAhorro(cliente, montoInicial));
+			} else if (tipoCuenta == 2) {
+			    cuentas.add(new CuentaCorriente(cliente, montoInicial));
+			} else {
+			    System.out.println("Tipo de cuenta no válido.");
+			    
+			}
+		}
+    }
+
+
+
+	
+
